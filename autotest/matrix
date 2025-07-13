@@ -1,0 +1,104 @@
+import numpy as np
+
+# Основные математические формулы
+
+# Матрица поворота вокруг оси Z
+def rotation_matrix_z(theta):
+    return np.array([
+        [np.cos(theta), -np.sin(theta), 0],
+        [np.sin(theta),  np.cos(theta), 0],
+        [0,              0,             1]
+    ])
+
+# Формула гравитационного ускорения по Ньютона: F = G * (m1*m2)/r^2
+def gravitational_force(G, m1, m2, r):
+    return G * (m1*m2) / (r**2) if r != 0 else 0
+
+# Метрика Минковского для пространства-времени (относительность)
+def minkowski_metric():
+    return np.array([
+        [-1, 0,  0,  0],
+        [0,  1,  0,  0],
+        [0,  0,  1,  0],
+        [0,  0,  0,  1]
+    ])
+
+# Лоренцево преобразование для скорости v в единицах c
+def lorentz_transform(v):
+    c = 1  # скорость света в натуральных единицах
+    gamma = 1 / np.sqrt(1 - (v/c)**2)
+    return np.array([
+        [gamma, -gamma*v/c, 0, 0],
+        [-gamma*v/c, gamma, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
+    ])
+
+# Шифрование сообщения с помощью матрицы перестановки
+def matrix_encrypt(message, key):
+    n = len(key)
+    # Создаем матрицу из сообщения по столбцам с заполнением пробелами
+    padded_len = int(np.ceil(len(message)/n)*n)
+    message += ' ' * (padded_len - len(message))
+    mat = [list(message[i:i+n]) for i in range(0, len(message), n)]
+    # Перестановка столбцов согласно ключу
+    order = sorted(range(len(key)), key=lambda k: key[k])
+    encrypted = ''
+    for col in order:
+        for row in mat:
+            encrypted += row[col]
+    return encrypted
+
+# Абстрактный визуальный эффект "матрицы" с квази-рандомными символами
+def create_matrix_pattern(rows=10, cols=30):
+    import random, string
+    chars = string.ascii_letters + string.digits + "!@#$%^&*()"
+    pattern = [[random.choice(chars) for _ in range(cols)] for _ in range(rows)]
+    # Добавим вращение и сдвиг символов, имитируя «зашифрованный» вид
+    rotated = ["".join(row[i%cols] for i in range(cols-1, -1, -1)) for row in pattern]
+    return rotated
+
+# Составляем комплексный "код матрицы" с расчетами и визуализацией
+def complex_matrix_code():
+    print("=== Математическая Матрица с гравитацией и относительностью ===\n")
+    
+    # Вращение
+    theta = np.pi/4  # 45 градусов
+    Rz = rotation_matrix_z(theta)
+    print("Матрица поворота (Z, 45°):")
+    print(Rz, "\n")
+    
+    # Гравитационная сила
+    G = 6.67430e-11
+    m1 = 5.972e24  # масса Земли, кг
+    m2 = 7.348e22  # масса Луны, кг
+    r = 3.844e8   # расстояние м
+    F = gravitational_force(G, m1, m2, r)
+    print(f"Гравитационная сила Земля-Луна: {F:.3e} Н\n")
+    
+    # Метрика Минковского
+    metric = minkowski_metric()
+    print("Метрика Минковского (пространство-время):")
+    print(metric, "\n")
+    
+    # Лоренцево преобразование при 0.8c
+    v = 0.8
+    L = lorentz_transform(v)
+    print(f"Лоренцево преобразование при скорости {v}c:")
+    print(L, "\n")
+    
+    # Шифрование текста
+    txt = "матрица с формулами гравитации и относительности"
+    key = "gravity"
+    encrypted = matrix_encrypt(txt, key)
+    print("Зашифрованный текст:")
+    print(encrypted, "\n")
+    
+    # Визуальный паттерн
+    print("Визуальный паттерн матрицы:")
+    pattern = create_matrix_pattern()
+    for line in pattern:
+        print(line)
+
+# Запуск
+complex_matrix_code()
